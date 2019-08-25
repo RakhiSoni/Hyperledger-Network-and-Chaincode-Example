@@ -1,0 +1,143 @@
+# Copyright IBM Corp. All Rights Reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+version: '2'
+
+volumes:
+  orderer.example.com:
+  peer0.Distributor.example.com:
+  peer1.Distributor.example.com:
+  peer0.Retailer.example.com:
+  peer1.Retailer.example.com:
+  peer0.ShipmentAgency.example.com:
+  peer1.ShipmentAgency.example.com:
+  peer0.Manufacturer.example.com:
+  peer1.Manufacturer.example.com:
+
+networks:
+  byfn:
+
+services:
+
+  ca.example.com:
+    extends:
+      file:   base/docker-compose-base.yaml
+      service: ca.example.com
+    container_name: ca.example.com
+    networks:
+      - byfn
+
+  orderer.example.com:
+    extends:
+      file:   base/docker-compose-base.yaml
+      service: orderer.example.com
+    container_name: orderer.example.com
+    networks:
+      - byfn
+
+  peer0.Distributor.example.com:
+    container_name: peer0.Distributor.example.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer0.Distributor.example.com
+    networks:
+      - byfn
+
+  peer1.Distributor.example.com:
+    container_name: peer1.Distributor.example.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer1.Distributor.example.com
+    networks:
+      - byfn
+
+  peer0.Retailer.example.com:
+    container_name: peer0.Retailer.example.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer0.Retailer.example.com
+    networks:
+      - byfn
+
+  peer1.Retailer.example.com:
+    container_name: peer1.Retailer.example.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer1.Retailer.example.com
+    networks:
+      - byfn
+
+  peer0.ShipmentAgency.example.com:
+    container_name: peer0.ShipmentAgency.example.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer0.ShipmentAgency.example.com
+    networks:
+      - byfn
+
+  peer1.ShipmentAgency.example.com:
+    container_name: peer1.ShipmentAgency.example.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer1.ShipmentAgency.example.com
+    networks:
+      - byfn
+
+  peer0.Manufacturer.example.com:
+    container_name: peer0.Manufacturer.example.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer0.Manufacturer.example.com
+    networks:
+      - byfn
+
+  peer1.Manufacturer.example.com:
+    container_name: peer1.Manufacturer.example.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer1.Manufacturer.example.com
+    networks:
+      - byfn
+
+  cli:
+    container_name: cli
+    image: hyperledger/fabric-tools:latest
+    tty: true
+    stdin_open: true
+    environment:
+      - SYS_CHANNEL=$SYS_CHANNEL
+      - GOPATH=/opt/gopath
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      #- FABRIC_LOGGING_SPEC=DEBUG
+      - FABRIC_LOGGING_SPEC=INFO
+      - CORE_PEER_ID=cli
+      - CORE_PEER_ADDRESS=peer0.Distributor.example.com:7051
+      - CORE_PEER_LOCALMSPID=DistributorMSP
+      - CORE_PEER_TLS_ENABLED=false
+      - CORE_PEER_TLS_CERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/Distributor.example.com/peers/peer0.Distributor.example.com/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/Distributor.example.com/peers/peer0.Distributor.example.com/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/Distributor.example.com/peers/peer0.Distributor.example.com/tls/ca.crt
+      - CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/Distributor.example.com/users/Admin@Distributor.example.com/msp
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+    command: /bin/bash
+    volumes:
+        - /var/run/:/host/var/run/
+        - ./../chaincode/:/opt/gopath/src/github.com/chaincode
+        - ./crypto-config:/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/
+        - ./scripts:/opt/gopath/src/github.com/hyperledger/fabric/peer/scripts/
+        - ./channel-artifacts:/opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts
+    depends_on:
+      - orderer.example.com
+      - peer0.Distributor.example.com
+      - peer1.Distributor.example.com
+      - peer0.Retailer.example.com
+      - peer1.Retailer.example.com
+      - peer0.ShipmentAgency.example.com
+      - peer1.ShipmentAgency.example.com
+      - peer0.Manufacturer.example.com
+      - peer1.Manufacturer.example.com
+    networks:
+      - byfn
+

@@ -1,0 +1,26 @@
+[
+ {
+   "name": "collection1PrivateProducts",
+   "policy": "OR('DistributorMSP.member', 'RetailerMSP.member','ShipmentAgencyMSP.member')",
+   "requiredPeerCount": 0,
+   "maxPeerCount": 3,
+   "blockToLive":1000000,
+   "memberOnlyRead": true
+},
+{
+  "name": "collection2PrivatePrivateProducts",
+  "policy": "OR('DistributorMSP.member', 'RetailerMSP.member','ShipmentAgencyMSP.member')",
+  "requiredPeerCount": 0,
+  "maxPeerCount": 3,
+  "blockToLive":1000000,
+  "memberOnlyRead": true
+},
+{
+  "name": "collectionProducts",
+  "policy": "OR('DistributorMSP.member', 'RetailerMSP.member','ShipmentAgencyMSP.member','ManufacturerMSP.member')",
+  "requiredPeerCount": 0,
+  "maxPeerCount": 3,
+  "blockToLive":1000000,
+  "memberOnlyRead": true
+}
+]

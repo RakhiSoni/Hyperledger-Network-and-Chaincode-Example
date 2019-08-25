@@ -1,0 +1,97 @@
+# Copyright IBM Corp. All Rights Reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+version: '2'
+
+networks:
+  byfn:
+
+services:
+
+  ca:
+      image: hyperledger/fabric-ca
+      environment:
+        - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+        - FABRIC_CA_SERVER_CA_NAME=ca-Manufacturer
+        - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.Manufacturer.example.com-cert.pem
+        - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/decefe2b8d251662145c23b2427a9385f1d65b2eac1b2412ee50c6bdbbf54885_sk
+      command: sh -c 'fabric-ca-server start -b admin:adminpw'
+      volumes:
+        - ../crypto-config/peerOrganizations/Manufacturer.example.com/ca/:/etc/hyperledger/fabric-ca-server-config
+      container_name: ca.example.com
+      ports:
+        - "7054:7054"
+
+  # ca0:
+  #   image: hyperledger/fabric-ca:latest
+  #   environment:
+  #     - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+  #     - FABRIC_CA_SERVER_CA_NAME=ca-Distributor
+  #     - FABRIC_CA_SERVER_TLS_ENABLED=false
+  #     - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.Distributor.example.com-cert.pem
+  #     - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/ae696960da4a6d920174cb4054626f9e81610e8f49b895ffe29c7c385ac27fd3_sk
+  #     - FABRIC_CA_SERVER_PORT=7054
+  #   ports:
+  #     - "7054:7054"
+  #   command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
+  #   volumes:
+  #     - ./crypto-config/peerOrganizations/Distributor.example.com/ca/:/etc/hyperledger/fabric-ca-server-config
+  #   container_name: ca_peerDistributor
+  #   networks:
+  #     - byfn
+
+  # ca1:
+  #   image: hyperledger/fabric-ca:latest
+  #   environment:
+  #     - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+  #     - FABRIC_CA_SERVER_CA_NAME=ca-Retailer
+  #     - FABRIC_CA_SERVER_TLS_ENABLED=false
+  #     - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.Retailer.example.com-cert.pem
+  #     - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/7a7741b0ed2ebccfb10fd54f3c56c1858d9893d30c80c5c37371b826b5524867_sk
+  #     - FABRIC_CA_SERVER_PORT=8054
+  #   ports:
+  #     - "8054:8054"
+  #   command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
+  #   volumes:
+  #     - ./crypto-config/peerOrganizations/Retailer.example.com/ca/:/etc/hyperledger/fabric-ca-server-config
+  #   container_name: ca_peerRetailer
+  #   networks:
+  #     - byfn
+
+  # ca2:
+  #   image: hyperledger/fabric-ca:latest
+  #   environment:
+  #     - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+  #     - FABRIC_CA_SERVER_CA_NAME=ca-ShipmentAgency
+  #     - FABRIC_CA_SERVER_TLS_ENABLED=false
+  #     - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.ShipmentAgency.example.com-cert.pem
+  #     - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/01c20e5b10a7258a89c1f0b784c4d0ce1cebfeb7d0fc51a6b8759b5090d5a155_sk
+  #     - FABRIC_CA_SERVER_PORT=9054
+  #   ports:
+  #     - "9054:9054"
+  #   command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
+  #   volumes:
+  #     - ./crypto-config/peerOrganizations/ShipmentAgency.example.com/ca/:/etc/hyperledger/fabric-ca-server-config
+  #   container_name: ca_peerShipmentAgency
+  #   networks:
+  #     - byfn   
+      
+  # ca3:
+  #   image: hyperledger/fabric-ca:latest
+  #   environment:
+  #     - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+  #     - FABRIC_CA_SERVER_CA_NAME=ca-Manufacturer
+  #     - FABRIC_CA_SERVER_TLS_ENABLED=false
+  #     - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.Manufacturer.example.com-cert.pem
+  #     - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/51405abc7811b01ebda10a139cd7000eed10050df559c2c2e006210d33a9fd70_sk
+  #     - FABRIC_CA_SERVER_PORT=7054
+  #   ports:
+  #     - "7054:7054"
+  #   command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
+  #   volumes:
+  #     - ./crypto-config/peerOrganizations/Manufacturer.example.com/ca/:/etc/hyperledger/fabric-ca-server-config
+  #   container_name: ca_peerManufacturer
+  #   networks:
+  #     - byfn         
